@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Capstone_Project.Data;
+using Capstone_Project.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,22 +12,28 @@ namespace Capstone_Project.Controllers
 {
     public class ParticipantController : Controller
     {
-        public ApplicationDbContext _db;
+        public ApplicationDbContext db;
         public ParticipantController(ApplicationDbContext db)
         {
-            _db = db;
+            this.db = db;
         }
         // GET: ParticipantController
         public ActionResult Index()
         {
-           
-            return View();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var participant = db.Participants.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            if(participant == null)
+            {
+                return RedirectToAction("Create");
+            }
+            return View(participant);
         }
 
         // GET: ParticipantController/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var participantDetails = db.Participants.Find(id);
+            return View(participantDetails);
         }
 
         // GET: ParticipantController/Create
@@ -38,10 +45,14 @@ namespace Capstone_Project.Controllers
         // POST: ParticipantController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(Participant participant)
         {
             try
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                participant.IdentityUserId = userId;
+                db.Participants.Add(participant);
+                db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -53,16 +64,19 @@ namespace Capstone_Project.Controllers
         // GET: ParticipantController/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            var participantEdit = db.Participants.Find(id);
+            return View(participantEdit);
         }
 
         // POST: ParticipantController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, Participant participant)
         {
             try
             {
+                db.Participants.Update(participant);
+                db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -74,16 +88,19 @@ namespace Capstone_Project.Controllers
         // GET: ParticipantController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var participantDelete = db.Participants.Find(id);
+            return View(participantDelete);
         }
 
         // POST: ParticipantController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public ActionResult Delete(int id, Participant participant)
         {
             try
             {
+                db.Participants.Remove(participant);
+                db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             catch

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Capstone_Project.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,8 @@ namespace Capstone_Project.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
+        public DbSet<Participant> Participants { get; set; }
+        public DbSet<Events> Event { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -20,11 +23,11 @@ namespace Capstone_Project.Data
             .HasData(
             new IdentityRole
             {
-                Name = "Admin",
-                NormalizedName = "ADMIN"
+                Name = "Participant",
+                NormalizedName = "PARTICIPANT"
             }
             );
         }
-
+        
     }
 }

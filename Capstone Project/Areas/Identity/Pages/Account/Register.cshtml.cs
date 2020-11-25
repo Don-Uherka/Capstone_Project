@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Capstone_Project.Data.Migrations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -30,14 +31,14 @@ namespace Capstone_Project.Areas.Identity.Pages.Account
             UserManager<IdentityUser> userManager,
             SignInManager<IdentityUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
-            //RoleManager<IdentityRole> roleManager)
+            IEmailSender emailSender,
+            RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-            //_roleManger = roleManager;
+            _roleManger = roleManager;
         }
 
         [BindProperty]
@@ -73,8 +74,8 @@ namespace Capstone_Project.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            //var roles = _roleManger.Roles;
-            //Roles = new SelectList(roles, "Name", "Name");
+            var roles = _roleManger.Roles;
+            Roles = new SelectList(roles, "Participant");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -83,22 +84,22 @@ namespace Capstone_Project.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                var participant = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var result = await _userManager.CreateAsync(participant, Input.Password);
                 if (result.Succeeded)
                 {
-                    //if(await _roleManger.RoleExistsAsync(Input.Role))
-                    //{
-                    //    await _userManager.AddToRoleAsync(user, Input.Role);
-                    //}
+                    if (await _roleManger.RoleExistsAsync("Participant"))
+                    {
+                        await _userManager.AddToRoleAsync(participant, "Participant");
+                    }
                     _logger.LogInformation("User created a new account with password.");
 
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(participant);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = participant.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
@@ -110,7 +111,7 @@ namespace Capstone_Project.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.SignInAsync(participant, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
                 }

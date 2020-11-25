@@ -11,7 +11,7 @@ namespace Capstone_Project.Models
     {
         public int Id { get; set; }
         public string firstName { get; set; }
-        public string LastNight { get; set; }
+        public string LastName { get; set; }
         public string Address1 { get; set; }
         public string Address2 { get; set; }
         public string City { get; set; }

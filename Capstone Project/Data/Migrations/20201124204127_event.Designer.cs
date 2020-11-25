@@ -4,14 +4,16 @@ using Capstone_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capstone_Project.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201124204127_event")]
+    partial class @event
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,6 +46,9 @@ namespace Capstone_Project.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Founder")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(10, 8)");
 
@@ -52,9 +57,6 @@ namespace Capstone_Project.Data.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ParticipantId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -66,8 +68,6 @@ namespace Capstone_Project.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ParticipantId");
 
                     b.ToTable("Event");
                 });
@@ -116,7 +116,7 @@ namespace Capstone_Project.Data.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("Participant");
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -148,8 +148,8 @@ namespace Capstone_Project.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "adedabea-fa7b-4588-a21c-8ad8a2f9a905",
-                            ConcurrencyStamp = "d25fcdb2-fc25-4fc9-bbfe-4a52b859b937",
+                            Id = "f2896f41-f4d7-4f14-930c-3867330c0a69",
+                            ConcurrencyStamp = "7f819be7-f989-4122-85dd-bdf9e96ba1f9",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });
@@ -322,15 +322,6 @@ namespace Capstone_Project.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Capstone_Project.Models.Events", b =>
-                {
-                    b.HasOne("Capstone_Project.Models.Participant", "Participant")
-                        .WithMany()
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Capstone_Project.Models.Participant", b =>

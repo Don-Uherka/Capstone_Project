@@ -10,6 +10,7 @@ namespace Capstone_Project.Models
     public class Events
     {
         [Key]
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
@@ -31,8 +32,10 @@ namespace Capstone_Project.Models
 
         [Column(TypeName = "decimal(11, 8)")]
         public decimal Longitude { get; set; }
-
-        [ForeignKey("Founder")]
-        public string Founder { get; set; }
+        
+        [Display(Name = "Founder")]
+        [ForeignKey("Participant")]
+        public int ParticipantId { get; set; }
+        public Participant Participant { get; set; }
     }
 }

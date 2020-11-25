@@ -10,7 +10,7 @@ namespace Capstone_Project.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public DbSet<Participant> Participants { get; set; }
+        public DbSet<Participant> Participant { get; set; }
         public DbSet<Events> Event { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

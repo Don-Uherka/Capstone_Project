@@ -5,11 +5,13 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Capstone_Project.Data;
 using Capstone_Project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Capstone_Project.Controllers
 {
+    [Authorize(Roles = "Participant")]
     public class ParticipantController : Controller
     {
         public ApplicationDbContext db;
@@ -21,7 +23,7 @@ namespace Capstone_Project.Controllers
         public ActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var participant = db.Participants.Where(p => p.IdentityUserId == userId).SingleOrDefault();
+            var participant = db.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
             if(participant == null)
             {
                 return RedirectToAction("Create");
@@ -32,7 +34,7 @@ namespace Capstone_Project.Controllers
         // GET: ParticipantController/Details/5
         public ActionResult Details(int id)
         {
-            var participantDetails = db.Participants.Find(id);
+            var participantDetails = db.Participant.Find(id);
             return View(participantDetails);
         }
 
@@ -51,7 +53,7 @@ namespace Capstone_Project.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 participant.IdentityUserId = userId;
-                db.Participants.Add(participant);
+                db.Participant.Add(participant);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -64,7 +66,7 @@ namespace Capstone_Project.Controllers
         // GET: ParticipantController/Edit/5
         public ActionResult Edit(int id)
         {
-            var participantEdit = db.Participants.Find(id);
+            var participantEdit = db.Participant.Find(id);
             return View(participantEdit);
         }
 
@@ -75,7 +77,7 @@ namespace Capstone_Project.Controllers
         {
             try
             {
-                db.Participants.Update(participant);
+                db.Participant.Update(participant);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -88,7 +90,7 @@ namespace Capstone_Project.Controllers
         // GET: ParticipantController/Delete/5
         public ActionResult Delete(int id)
         {
-            var participantDelete = db.Participants.Find(id);
+            var participantDelete = db.Participant.Find(id);
             return View(participantDelete);
         }
 
@@ -99,7 +101,31 @@ namespace Capstone_Project.Controllers
         {
             try
             {
-                db.Participants.Remove(participant);
+                db.Participant.Remove(participant);
+                db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public ActionResult CreateEvent()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreateEvent(Events events)
+        {
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                //Find logged in Participant and add their Id to this Event object
+                //What properties of the 'Event' will be set by the user on the view,
+                //and which properties need to be hardcoded here?
+                db.Event.Add(events);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }

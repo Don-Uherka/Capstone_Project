@@ -4,14 +4,16 @@ using Capstone_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capstone_Project.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201124191245_fourth")]
+    partial class fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,10 +23,8 @@ namespace Capstone_Project.Data.Migrations
 
             modelBuilder.Entity("Capstone_Project.Models.Events", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Address1")
                         .HasColumnType("nvarchar(max)");
@@ -44,17 +44,14 @@ namespace Capstone_Project.Data.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Founder")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(10, 8)");
 
                     b.Property<decimal>("Longitude")
                         .HasColumnType("decimal(11, 8)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ParticipantId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -65,9 +62,7 @@ namespace Capstone_Project.Data.Migrations
                     b.Property<int>("ZipCode")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParticipantId");
+                    b.HasKey("Name");
 
                     b.ToTable("Event");
                 });
@@ -116,7 +111,7 @@ namespace Capstone_Project.Data.Migrations
 
                     b.HasIndex("IdentityUserId");
 
-                    b.ToTable("Participant");
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -148,8 +143,8 @@ namespace Capstone_Project.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "adedabea-fa7b-4588-a21c-8ad8a2f9a905",
-                            ConcurrencyStamp = "d25fcdb2-fc25-4fc9-bbfe-4a52b859b937",
+                            Id = "7fa26d1a-38b0-465f-8fbe-847554c8d636",
+                            ConcurrencyStamp = "149655a4-9630-4cc5-8a24-39efebeaf412",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });
@@ -322,15 +317,6 @@ namespace Capstone_Project.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Capstone_Project.Models.Events", b =>
-                {
-                    b.HasOne("Capstone_Project.Models.Participant", "Participant")
-                        .WithMany()
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Capstone_Project.Models.Participant", b =>

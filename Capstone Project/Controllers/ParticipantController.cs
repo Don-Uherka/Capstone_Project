@@ -24,7 +24,7 @@ namespace Capstone_Project.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var participant = db.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
-            if(participant == null)
+            if (participant == null)
             {
                 return RedirectToAction("Create");
             }
@@ -122,9 +122,11 @@ namespace Capstone_Project.Controllers
             try
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var participant = db.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
                 //Find logged in Participant and add their Id to this Event object
                 //What properties of the 'Event' will be set by the user on the view,
                 //and which properties need to be hardcoded here?
+                //hardcoded properties will be lat and long
                 db.Event.Add(events);
                 db.SaveChanges();
                 return RedirectToAction(nameof(Index));

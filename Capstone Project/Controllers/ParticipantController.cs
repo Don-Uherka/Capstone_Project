@@ -110,11 +110,13 @@ namespace Capstone_Project.Controllers
                 return View();
             }
         }
+        //Get
         public ActionResult CreateEvent()
         {
 
             return View();
         }
+        //Post
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateEvent(Events events)

@@ -138,6 +138,11 @@ namespace Capstone_Project.Controllers
                 return View();
             }
         }
+        public ActionResult EventDetails(int id)
+        {
+            var EventDetail = db.Event.Find(id);
+            return View(EventDetail);
+        }
         public ActionResult CreatePost()
         {
 
@@ -159,6 +164,11 @@ namespace Capstone_Project.Controllers
             {
                 return View();
             }
+        }
+        public ActionResult PostDetails(int id)
+        {
+            var PostDetail = db.Posts.Find(id);
+            return View(PostDetail);
         }
     }
 }

@@ -138,5 +138,27 @@ namespace Capstone_Project.Controllers
                 return View();
             }
         }
+        public ActionResult CreatePost()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult CreatePost(Post post)
+        {
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var participant = db.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+                db.Posts.Add(post);
+                db.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
+        }
     }
 }

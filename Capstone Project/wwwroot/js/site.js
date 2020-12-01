@@ -18,6 +18,12 @@ function getQuote() {
                     <td>${obj[13].author}</td>
                     <td>${obj[13].text}</td>
                 </tr>`,
+                    $("#Quotes").append(
+                        `<tr>
+                    <td>${obj[135].author}</td>
+                    <td>${obj[135].text}</td>
+                </tr>`,
+                    )
                 )
             
 

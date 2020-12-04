@@ -13,10 +13,12 @@ namespace Capstone_Project.Models
         public int Id { get; set; }
         public bool Favorite { get; set; }
 
-        [ForeignKey("EventId")]
+        [ForeignKey("Events")]
         public int EventId { get; set; }
+        public Events Events { get; set; }
 
-        [ForeignKey("ParticipantId")]
+        [ForeignKey("Participant")]
         public int ParticipantId { get; set; }
+        public Participant Participant { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace Capstone_Project.Data
         public DbSet<Participant> Participant { get; set; }
         public DbSet<Events> Event { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<EventParticipants> EventParticipants { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

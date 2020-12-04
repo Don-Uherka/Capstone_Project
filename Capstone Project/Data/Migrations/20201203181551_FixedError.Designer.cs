@@ -4,14 +4,16 @@ using Capstone_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capstone_Project.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201203181551_FixedError")]
+    partial class FixedError
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,10 +38,6 @@ namespace Capstone_Project.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("ParticipantId");
 
                     b.ToTable("EventParticipants");
                 });
@@ -194,8 +192,8 @@ namespace Capstone_Project.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1db119a7-96a2-4458-b0bd-dc6622a56999",
-                            ConcurrencyStamp = "87b432ae-d46a-4576-a8cd-31a9f9fa6384",
+                            Id = "712d6efd-6e6a-44c3-9a51-f62b00f73c03",
+                            ConcurrencyStamp = "ad0f343a-d4e0-4f02-8a8a-88f45766697b",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });
@@ -368,21 +366,6 @@ namespace Capstone_Project.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Capstone_Project.Models.EventParticipants", b =>
-                {
-                    b.HasOne("Capstone_Project.Models.Events", "Events")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Capstone_Project.Models.Participant", "Participant")
-                        .WithMany()
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Capstone_Project.Models.Events", b =>

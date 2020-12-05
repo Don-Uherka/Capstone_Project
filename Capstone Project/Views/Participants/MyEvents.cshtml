@@ -1,0 +1,99 @@
+﻿@model IEnumerable<Capstone_Project.Models.ParticipantEventAttendanceVM>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.EventParticipantsVM.Favorite)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.Address1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.Address2)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.ZipCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EventsVM.Country)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            
+            <td>
+                @Html.CheckBoxFor(modelItem => item.EventParticipantsVM.Favorite, "false")
+            </td>
+            <td>
+                <a asp-action="FavoriteEvent" asp-route-id="@item.EventParticipantsVM.Id">Mark as Favorite</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.StartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.EndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.Address1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.Address2)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.City)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.ZipCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventsVM.Country)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.EventParticipantsVM.Id">Edit</a> |
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

@@ -212,9 +212,43 @@ namespace Capstone_Project.Controllers
             eventParticipants.EventId = id;
             var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
             eventParticipants.ParticipantId = participant.Id;
-            _context.Add(eventParticipants);
+            _context.Update(eventParticipants);
             _context.SaveChanges();
             return RedirectToAction(nameof(IndexEvents));
+        }
+        public IActionResult MyEvents()
+        {
+            var joinEvent = from s in _context.Event
+                                        join st in _context.EventParticipants on s.Id equals st.EventId into st2
+                                        from st in st2.DefaultIfEmpty()
+                                        select new ParticipantEventAttendanceVM { EventsVM = s, EventParticipantsVM = st };
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+            var result = joinEvent.Where(e => e.EventParticipantsVM.ParticipantId == participant.Id);
+                 
+            return View(result);
+        }
+        public IActionResult FavoriteEvent(int id)
+        {
+            EventParticipants eventParticipants = new EventParticipants();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            eventParticipants.EventId = id;
+            var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+            eventParticipants.ParticipantId = participant.Id;
+            var isfavorite = _context.EventParticipants.Where(e => e.ParticipantId == participant.Id && e.EventId == id).FirstOrDefault();
+            if (isfavorite.Favorite)
+            {
+                eventParticipants.Favorite = false;
+            }
+            else
+            {
+                eventParticipants.Favorite = true;
+            }
+
+            
+            _context.Update(eventParticipants);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(MyEvents));
         }
     }
 }

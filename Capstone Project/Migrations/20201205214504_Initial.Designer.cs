@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Capstone_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201205183036_Initial")]
+    [Migration("20201205214504_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -212,8 +212,8 @@ namespace Capstone_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "81eced58-173c-464d-a3d8-71cfaf860bbd",
-                            ConcurrencyStamp = "6fd9aa16-dff0-4119-b103-e2dc23723fb8",
+                            Id = "b3396253-9799-41d8-a102-8754249713ee",
+                            ConcurrencyStamp = "a6f0b0af-86e7-403b-9bd5-9442dad9c0ee",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });

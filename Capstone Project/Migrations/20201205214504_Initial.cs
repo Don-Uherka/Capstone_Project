@@ -251,7 +251,7 @@ namespace Capstone_Project.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "81eced58-173c-464d-a3d8-71cfaf860bbd", "6fd9aa16-dff0-4119-b103-e2dc23723fb8", "Participant", "PARTICIPANT" });
+                values: new object[] { "b3396253-9799-41d8-a102-8754249713ee", "a6f0b0af-86e7-403b-9bd5-9442dad9c0ee", "Participant", "PARTICIPANT" });
 
             migrationBuilder.InsertData(
                 table: "Event",

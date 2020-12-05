@@ -190,16 +190,16 @@ namespace Capstone_Project.Controllers
             {
                 _context.Add(events);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(IndexEvents));
             }
             //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
             return View(events);
         }
         //GET: Events
-        //public async Task<IActionResult> IndexEvents()
-        //{
-        //    var applicationDbContext = _context.Event.Include(e => e.Participant);
-        //    return View(await applicationDbContext.ToListAsync());
-        //}
+        public async Task<IActionResult> IndexEvents()
+        {
+            var applicationDbContext = _context.Event.Include(e => e);
+            return View(await applicationDbContext.ToListAsync());
+        }
     }
 }

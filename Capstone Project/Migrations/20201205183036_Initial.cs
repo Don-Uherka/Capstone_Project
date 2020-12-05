@@ -63,7 +63,8 @@ namespace Capstone_Project.Migrations
                     ZipCode = table.Column<int>(nullable: false),
                     Country = table.Column<string>(nullable: true),
                     Latitude = table.Column<decimal>(type: "decimal(10, 8)", nullable: false),
-                    Longitude = table.Column<decimal>(type: "decimal(11, 8)", nullable: false)
+                    Longitude = table.Column<decimal>(type: "decimal(11, 8)", nullable: false),
+                    Founder = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -227,7 +228,6 @@ namespace Capstone_Project.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Favorite = table.Column<bool>(nullable: false),
-                    Founder = table.Column<bool>(nullable: false),
                     EventId = table.Column<int>(nullable: false),
                     ParticipantId = table.Column<int>(nullable: false)
                 },
@@ -251,7 +251,12 @@ namespace Capstone_Project.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "f6d21387-fab0-44ec-838f-3a63f17ca26e", "50913728-e906-42e1-adae-0a07412398d1", "Participant", "PARTICIPANT" });
+                values: new object[] { "81eced58-173c-464d-a3d8-71cfaf860bbd", "6fd9aa16-dff0-4119-b103-e2dc23723fb8", "Participant", "PARTICIPANT" });
+
+            migrationBuilder.InsertData(
+                table: "Event",
+                columns: new[] { "Id", "Address1", "Address2", "City", "Country", "Description", "EndDate", "Founder", "Latitude", "Longitude", "Name", "StartDate", "State", "ZipCode" },
+                values: new object[] { 1, "117 walnut street", null, "Beaver Dam", "USA", "walk", new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "Don", 10m, 10m, "walk", new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "WI", 53916 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

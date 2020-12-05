@@ -29,6 +29,44 @@ namespace Capstone_Project.Data
                 NormalizedName = "PARTICIPANT"
             }
             );
+            base.OnModelCreating(builder);
+            builder.Entity<Events>()
+            .HasData(
+            new Events
+            {
+                
+              Id = 1,
+              Name = "walk",
+              Description = "walk",
+              StartDate = new DateTime(2020, 10, 11),
+
+              EndDate = new DateTime(2020, 10, 11),
+
+
+
+         
+
+
+              Address1 = "117 walnut street",
+         
+              City = "Beaver Dam",
+              State = "WI",
+
+        
+              ZipCode = 53916,
+              Country = "USA",
+
+        
+              Latitude = 10,
+
+        
+              Longitude = 10,
+
+              Founder = "Don"
+
+
+    }
+            );
         }
         
     }

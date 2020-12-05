@@ -15,8 +15,7 @@ namespace Capstone_Project.Models
         public string Description { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        [NotMapped]
-        public string Attendees { get; set; }
+        
         [Display(Name = "Address")]
         public string Address1 { get; set; }
         public string Address2 { get; set; }
@@ -32,6 +31,7 @@ namespace Capstone_Project.Models
 
         [Column(TypeName = "decimal(11, 8)")]
         public decimal Longitude { get; set; }
-        
+
+        public string Founder { get; set; }
     }
 }

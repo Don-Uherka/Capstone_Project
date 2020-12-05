@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Capstone_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201204204225_Initial")]
+    [Migration("20201205183036_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,9 +32,6 @@ namespace Capstone_Project.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("Favorite")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Founder")
                         .HasColumnType("bit");
 
                     b.Property<int>("ParticipantId")
@@ -74,6 +71,9 @@ namespace Capstone_Project.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Founder")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("Latitude")
                         .HasColumnType("decimal(10, 8)");
 
@@ -95,6 +95,24 @@ namespace Capstone_Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Event");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address1 = "117 walnut street",
+                            City = "Beaver Dam",
+                            Country = "USA",
+                            Description = "walk",
+                            EndDate = new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Founder = "Don",
+                            Latitude = 10m,
+                            Longitude = 10m,
+                            Name = "walk",
+                            StartDate = new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            State = "WI",
+                            ZipCode = 53916
+                        });
                 });
 
             modelBuilder.Entity("Capstone_Project.Models.Participant", b =>
@@ -194,8 +212,8 @@ namespace Capstone_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f6d21387-fab0-44ec-838f-3a63f17ca26e",
-                            ConcurrencyStamp = "50913728-e906-42e1-adae-0a07412398d1",
+                            Id = "81eced58-173c-464d-a3d8-71cfaf860bbd",
+                            ConcurrencyStamp = "6fd9aa16-dff0-4119-b103-e2dc23723fb8",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });

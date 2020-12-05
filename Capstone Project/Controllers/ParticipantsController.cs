@@ -168,9 +168,10 @@ namespace Capstone_Project.Controllers
             return _context.Participant.Any(e => e.Id == id);
         }
         // GET: Events/Create
+        
         public IActionResult CreateEvent()
         {
-            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id");
+            ViewBag.Founder = new SelectList(_context.Participant, "Name", "Name");
             return View();
         }
 
@@ -179,17 +180,20 @@ namespace Capstone_Project.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateEvent([Bind("Id,Name,Description,StartDate,EndDate,Address1,Address2,City,State,ZipCode,Country,Latitude,Longitude,ParticipantId")] Events events)
+        public async Task<IActionResult> CreateEvent([Bind("Founder,Id,Name,Description,StartDate,EndDate,Address1,Address2,City,State,ZipCode,Country,Latitude,Longitude")] Events events)
         {
+            
             //Get Id from logged in user to use as ParticipantId of the created Event
             //Get rid of ViewData ParticiapntID select list
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
-            var Event = _context.Event;
+            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+            
+          
             if (ModelState.IsValid)
             {
                 _context.Add(events);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(IndexEvents));
             }
             //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
@@ -200,6 +204,17 @@ namespace Capstone_Project.Controllers
         {
             var applicationDbContext = _context.Event.Include(e => e);
             return View(await applicationDbContext.ToListAsync());
+        }
+        public IActionResult JoinEvent(int id)
+        {
+            EventParticipants eventParticipants = new EventParticipants();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            eventParticipants.EventId = id;
+            var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+            eventParticipants.ParticipantId = participant.Id;
+            _context.Add(eventParticipants);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(IndexEvents));
         }
     }
 }

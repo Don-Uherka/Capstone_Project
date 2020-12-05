@@ -22,7 +22,7 @@ namespace Capstone_Project.ActionFilters
             {
                 if (_claimsPrincipal.IsInRole("Participant"))
                 {
-                    context.Result = new RedirectToActionResult("Info",
+                    context.Result = new RedirectToActionResult("Create",
                     "Participants", null);
                 }
                 //else if (_claimsPrincipal.IsInRole("Employee"))

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Capstone_Project.Data;
 using Capstone_Project.Models;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Capstone_Project.Controllers
 {
+    [Authorize(Roles = "Participant")]
     public class ParticipantsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -55,7 +57,8 @@ namespace Capstone_Project.Controllers
         // GET: Participants/Create
         public IActionResult Create()
         {
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
+            
+
             return View();
         }
 
@@ -68,9 +71,10 @@ namespace Capstone_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                participant.IdentityUserId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 _context.Add(participant);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Info));
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", participant.IdentityUserId);
             return View(participant);
@@ -186,16 +190,16 @@ namespace Capstone_Project.Controllers
             {
                 _context.Add(events);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(IndexEvents));
+                return RedirectToAction(nameof(Index));
             }
             //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
             return View(events);
         }
-        // GET: Events
-        public async Task<IActionResult> IndexEvents()
-        {
-            var applicationDbContext = _context.Event.Include(e => e.Participant);
-            return View(await applicationDbContext.ToListAsync());
-        }
+        //GET: Events
+        //public async Task<IActionResult> IndexEvents()
+        //{
+        //    var applicationDbContext = _context.Event.Include(e => e.Participant);
+        //    return View(await applicationDbContext.ToListAsync());
+        //}
     }
 }

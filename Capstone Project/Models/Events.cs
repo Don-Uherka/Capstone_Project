@@ -33,9 +33,5 @@ namespace Capstone_Project.Models
         [Column(TypeName = "decimal(11, 8)")]
         public decimal Longitude { get; set; }
         
-        [Display(Name = "Founder")]
-        [ForeignKey("Participant")]
-        public int ParticipantId { get; set; }
-        public Participant Participant { get; set; }
     }
 }

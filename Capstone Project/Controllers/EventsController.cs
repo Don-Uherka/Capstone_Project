@@ -22,21 +22,20 @@ namespace Capstone_Project.Controllers
         // GET: Events
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Event.Include(e => e.Participant);
+            var applicationDbContext = _context.Event.Include(e => e.Name);
             return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Events/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var events = await _context.Event
-                .Include(e => e.Participant)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var events = _context.EventParticipants.Include(e => e.Participant.Id).FirstOrDefault(m => m.Id == id);
+                
             if (events == null)
             {
                 return NotFound();
@@ -48,7 +47,7 @@ namespace Capstone_Project.Controllers
         // GET: Events/Create
         public IActionResult Create()
         {
-            ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id");
+            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id");
             return View();
         }
 
@@ -65,7 +64,7 @@ namespace Capstone_Project.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
+            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
             return View(events);
         }
 
@@ -82,7 +81,7 @@ namespace Capstone_Project.Controllers
             {
                 return NotFound();
             }
-            ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
+            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
             return View(events);
         }
 
@@ -118,21 +117,19 @@ namespace Capstone_Project.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
+            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", events.ParticipantId);
             return View(events);
         }
 
         // GET: Events/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var events = await _context.Event
-                .Include(e => e.Participant)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var events = _context.Event.Include(e => e).FirstOrDefault(m => m.Id == id);
+            
             if (events == null)
             {
                 return NotFound();

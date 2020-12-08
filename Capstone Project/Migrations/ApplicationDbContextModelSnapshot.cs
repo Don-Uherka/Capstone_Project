@@ -210,8 +210,8 @@ namespace Capstone_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b3396253-9799-41d8-a102-8754249713ee",
-                            ConcurrencyStamp = "a6f0b0af-86e7-403b-9bd5-9442dad9c0ee",
+                            Id = "3f176a9d-d067-4b30-92bb-72635653aa1f",
+                            ConcurrencyStamp = "18fa9967-f1cd-458a-a42b-9f98048273f0",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });

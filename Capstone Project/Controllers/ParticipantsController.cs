@@ -9,6 +9,10 @@ using Capstone_Project.Data;
 using Capstone_Project.Models;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Geocoding;
+using Geocoding.Google;
+using System.Net;
+using Newtonsoft.Json.Linq;
 
 namespace Capstone_Project.Controllers
 {
@@ -188,9 +192,19 @@ namespace Capstone_Project.Controllers
             //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             //var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
             
-          
+            
             if (ModelState.IsValid)
             {
+                string address = events.Address1 + "+" + events.City + "+" + events.State + "+" + events.ZipCode.ToString();
+                var JsonRequest = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",&key=" + APIKEY.GOOGLE_API_KEY;
+                var json = new WebClient().DownloadString(JsonRequest);
+                JObject data = JObject.Parse(json);
+                
+
+
+                events.Latitude = (double)data["results"][0]["geometry"]["location"]["lat"];
+                events.Longitude = (double)data["results"][0]["geometry"]["location"]["lng"];
+
                 _context.Add(events);
                 await _context.SaveChangesAsync();
 
@@ -236,7 +250,11 @@ namespace Capstone_Project.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
             var result = joinEvent.Where(e => e.EventParticipantsVM.ParticipantId == participant.Id);
-                 
+            var favoriteEvents = joinEvent.Where(e => e.EventParticipantsVM.Favorite == true).ToList();
+            List<double> lat = favoriteEvents.Select(c => c.EventsVM.Latitude).ToList();
+            List<double> lng = favoriteEvents.Select(c => c.EventsVM.Longitude).ToList();
+            ViewBag.lng = lng;
+            ViewBag.lat = lat;
             return View(result);
         }
         public IActionResult FavoriteEvent(int id)
@@ -262,6 +280,21 @@ namespace Capstone_Project.Controllers
             _context.Update(eventParticipants);
             _context.SaveChanges();
             return RedirectToAction(nameof(MyEvents));
+        }
+        public IActionResult CreatePost(Post post)
+        {
+            try
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+                _context.Posts.Add(post);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+            catch
+            {
+                return View();
+            }
         }
     }
 }

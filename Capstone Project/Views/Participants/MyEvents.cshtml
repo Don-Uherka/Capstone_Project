@@ -97,3 +97,37 @@
         }
     </tbody>
 </table>
+<div id="map"></div>
+<script>
+    let map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -34.397, lng: 150.644 },
+            zoom: 8,
+        })
+        var i;
+            @for (var i = 0; i < ViewBag.lat.Count; i++)
+            {
+                @Html.Raw("addMarker(" + ViewBag.lat[i] + "," + ViewBag.lng[i] + ");");
+            }
+        function addMarker(x, y) {            var location = new google.maps.LatLng(x, y);            var marker = new google.maps.Marker({                position: location,                map: map,            });
+
+        }
+    };
+</script>
+<script defer src="@APIKEY.GOOGLE">
+
+</script>
+<style>
+    #map {
+        height: 500px;
+        width: 500px;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>

@@ -27,10 +27,10 @@ namespace Capstone_Project.Models
         public string Country { get; set; }
 
         [Column(TypeName = "decimal(10, 8)")]
-        public decimal Latitude { get; set; }
+        public double Latitude { get; set; }
 
         [Column(TypeName = "decimal(11, 8)")]
-        public decimal Longitude { get; set; }
+        public double Longitude { get; set; }
 
         public string Founder { get; set; }
     }

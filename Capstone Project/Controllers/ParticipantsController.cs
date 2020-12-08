@@ -281,20 +281,35 @@ namespace Capstone_Project.Controllers
             _context.SaveChanges();
             return RedirectToAction(nameof(MyEvents));
         }
-        public IActionResult CreatePost(Post post)
+        public IActionResult SharePostCreate()
         {
-            try
+            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id");
+            return View();
+        }
+
+        // POST: SharePosts/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SharePostCreate([Bind("Id,Anonymous,Content,ParticipantId")] SharePost sharePost)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
+            if (ModelState.IsValid)
             {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
-                _context.Posts.Add(post);
+                sharePost.ParticipantId = participant.Id;
+                _context.Add(sharePost);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(SharePostIndex));
             }
-            catch
-            {
-                return View();
-            }
+            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", sharePost.ParticipantId);
+            return View(sharePost);
+        }
+        public async Task<IActionResult> SharePostIndex()
+        {
+            var applicationDbContext = _context.SharePosts.Include(s => s.Participant);
+            return View(await applicationDbContext.ToListAsync());
         }
     }
 }

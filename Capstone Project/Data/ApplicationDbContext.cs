@@ -12,7 +12,7 @@ namespace Capstone_Project.Data
     {
         public DbSet<Participant> Participant { get; set; }
         public DbSet<Events> Event { get; set; }
-        public DbSet<Post> Posts { get; set; }
+        public DbSet<SharePost> SharePosts { get; set; }
         public DbSet<EventParticipants> EventParticipants { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,40 +34,23 @@ namespace Capstone_Project.Data
             .HasData(
             new Events
             {
-                
-              Id = 1,
-              Name = "walk",
-              Description = "walk",
-              StartDate = new DateTime(2020, 10, 11),
 
-              EndDate = new DateTime(2020, 10, 11),
-
-
-
-         
-
-
-              Address1 = "117 walnut street",
-         
-              City = "Beaver Dam",
-              State = "WI",
-
-        
-              ZipCode = 53916,
-              Country = "USA",
-
-        
-              Latitude = 10,
-
-        
-              Longitude = 10,
-
-              Founder = "Don"
-
-
-    }
+                Id = 1,
+                Name = "walk",
+                Description = "walk",
+                StartDate = new DateTime(2020, 10, 11),
+                EndDate = new DateTime(2020, 10, 11),
+                Address1 = "117 walnut street",
+                City = "Beaver Dam",
+                State = "WI",
+                ZipCode = 53916,
+                Country = "USA",
+                Latitude = 10,
+                Longitude = 10,
+                Founder = "Don"
+            }
             );
         }
-        
+
     }
 }

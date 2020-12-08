@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Capstone_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20201207190722_Initial")]
-    partial class Initial
+    [Migration("20201208172723_Seed")]
+    partial class Seed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,7 +162,7 @@ namespace Capstone_Project.Migrations
                     b.ToTable("Participant");
                 });
 
-            modelBuilder.Entity("Capstone_Project.Models.Post", b =>
+            modelBuilder.Entity("Capstone_Project.Models.SharePost", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -178,9 +178,14 @@ namespace Capstone_Project.Migrations
                     b.Property<string>("participantId")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("participantId1")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Posts");
+                    b.HasIndex("participantId1");
+
+                    b.ToTable("SharePosts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -212,8 +217,8 @@ namespace Capstone_Project.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3f176a9d-d067-4b30-92bb-72635653aa1f",
-                            ConcurrencyStamp = "18fa9967-f1cd-458a-a42b-9f98048273f0",
+                            Id = "5d1ed81c-cdce-4a20-bfc8-ba7baeaa82bf",
+                            ConcurrencyStamp = "ac81f9d5-19eb-412b-95e1-609e87984d0d",
                             Name = "Participant",
                             NormalizedName = "PARTICIPANT"
                         });
@@ -408,6 +413,13 @@ namespace Capstone_Project.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("Capstone_Project.Models.SharePost", b =>
+                {
+                    b.HasOne("Capstone_Project.Models.Participant", "participant")
+                        .WithMany()
+                        .HasForeignKey("participantId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -72,21 +72,6 @@ namespace Capstone_Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Posts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Anonymous = table.Column<bool>(nullable: false),
-                    Content = table.Column<string>(nullable: true),
-                    participantId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Posts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -248,15 +233,27 @@ namespace Capstone_Project.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "AspNetRoles",
-                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "3f176a9d-d067-4b30-92bb-72635653aa1f", "18fa9967-f1cd-458a-a42b-9f98048273f0", "Participant", "PARTICIPANT" });
-
-            migrationBuilder.InsertData(
-                table: "Event",
-                columns: new[] { "Id", "Address1", "Address2", "City", "Country", "Description", "EndDate", "Founder", "Latitude", "Longitude", "Name", "StartDate", "State", "ZipCode" },
-                values: new object[] { 1, "117 walnut street", null, "Beaver Dam", "USA", "walk", new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "Don", 10m, 10m, "walk", new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "WI", 53916 });
+            migrationBuilder.CreateTable(
+                name: "SharePosts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Anonymous = table.Column<bool>(nullable: false),
+                    Content = table.Column<string>(nullable: true),
+                    participantId = table.Column<string>(nullable: true),
+                    participantId1 = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SharePosts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SharePosts_Participant_participantId1",
+                        column: x => x.participantId1,
+                        principalTable: "Participant",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -311,6 +308,11 @@ namespace Capstone_Project.Migrations
                 name: "IX_Participant_IdentityUserId",
                 table: "Participant",
                 column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SharePosts_participantId1",
+                table: "SharePosts",
+                column: "participantId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -334,7 +336,7 @@ namespace Capstone_Project.Migrations
                 name: "EventParticipants");
 
             migrationBuilder.DropTable(
-                name: "Posts");
+                name: "SharePosts");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

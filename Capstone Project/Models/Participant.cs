@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace Capstone_Project.Models
 {
     public class Participant
     {
+        [Key]
         public int Id { get; set; }
         public string firstName { get; set; }
         public string LastName { get; set; }

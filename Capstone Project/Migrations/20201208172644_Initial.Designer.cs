@@ -4,14 +4,16 @@ using Capstone_Project.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Capstone_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201208172644_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,24 +95,6 @@ namespace Capstone_Project.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Event");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Address1 = "117 walnut street",
-                            City = "Beaver Dam",
-                            Country = "USA",
-                            Description = "walk",
-                            EndDate = new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Founder = "Don",
-                            Latitude = 10m,
-                            Longitude = 10m,
-                            Name = "walk",
-                            StartDate = new DateTime(2020, 10, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            State = "WI",
-                            ZipCode = 53916
-                        });
                 });
 
             modelBuilder.Entity("Capstone_Project.Models.Participant", b =>
@@ -173,12 +157,15 @@ namespace Capstone_Project.Migrations
                     b.Property<string>("Content")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ParticipantId")
+                    b.Property<string>("participantId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("participantId1")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParticipantId");
+                    b.HasIndex("participantId1");
 
                     b.ToTable("SharePosts");
                 });
@@ -208,15 +195,6 @@ namespace Capstone_Project.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "58b6ea50-c4fc-4962-a95a-5b75beed5b65",
-                            ConcurrencyStamp = "57fe2a8b-6e24-4d87-9cdb-4483955307bb",
-                            Name = "Participant",
-                            NormalizedName = "PARTICIPANT"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -412,11 +390,9 @@ namespace Capstone_Project.Migrations
 
             modelBuilder.Entity("Capstone_Project.Models.SharePost", b =>
                 {
-                    b.HasOne("Capstone_Project.Models.Participant", "Participant")
+                    b.HasOne("Capstone_Project.Models.Participant", "participant")
                         .WithMany()
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("participantId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

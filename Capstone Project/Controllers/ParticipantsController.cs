@@ -261,11 +261,7 @@ namespace Capstone_Project.Controllers
         {
             EventParticipants eventParticipants = new EventParticipants();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            
-            //var participant = _context.Participant.Where(p => p.IdentityUserId == userId).FirstOrDefault();
-            //eventParticipants.ParticipantId = participant.Id;
             var isfavorite = _context.EventParticipants.Where(e => e.Id == id).FirstOrDefault();
-            //eventParticipants.EventId = id;
             eventParticipants = isfavorite;
             if (isfavorite.Favorite)
             {
@@ -275,21 +271,14 @@ namespace Capstone_Project.Controllers
             {
                 eventParticipants.Favorite = true;
             }
-            //need to check database and delete old and replace with new "checked"
-            
             _context.Update(eventParticipants);
             _context.SaveChanges();
             return RedirectToAction(nameof(MyEvents));
         }
         public IActionResult SharePostCreate()
         {
-            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id");
             return View();
         }
-
-        // POST: SharePosts/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SharePostCreate([Bind("Id,Anonymous,Content,ParticipantId")] SharePost sharePost)
@@ -303,7 +292,6 @@ namespace Capstone_Project.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(SharePostIndex));
             }
-            //ViewData["ParticipantId"] = new SelectList(_context.Participant, "Id", "Id", sharePost.ParticipantId);
             return View(sharePost);
         }
         public async Task<IActionResult> SharePostIndex()
